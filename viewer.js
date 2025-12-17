@@ -35,6 +35,33 @@ fetch("config.json")
   .then(r => r.json())
   .then(cfg => loadModel(cfg));
 
+function fitCameraToObject(camera, controls, object) {
+  const box = new THREE.Box3().setFromObject(object);
+  const size = box.getSize(new THREE.Vector3());
+  const center = box.getCenter(new THREE.Vector3());
+
+  const maxDim = Math.max(size.x, size.y, size.z);
+  const fov = camera.fov * (Math.PI / 180);
+  let cameraZ = Math.abs(maxDim / 2 / Math.tan(fov / 2));
+
+  cameraZ *= 1.5; // Abstandsfaktor
+
+  camera.position.set(
+    center.x + cameraZ,
+    center.y + cameraZ,
+    center.z + cameraZ
+  );
+
+  camera.near = cameraZ / 100;
+  camera.far = cameraZ * 100;
+  camera.updateProjectionMatrix();
+
+  controls.target.copy(center);
+  controls.update();
+}
+
+
+
 function loadModel(cfg) {
   const loader = new GLTFLoader();
   loader.load(cfg.model, gltf => {
@@ -51,7 +78,7 @@ function loadModel(cfg) {
         }
       });
     });
-
+    fitCameraToObject(camera, controls, modelRoot);
     setupUI();
   });
 }
