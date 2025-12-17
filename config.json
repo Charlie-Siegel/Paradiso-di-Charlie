@@ -1,0 +1,7 @@
+{
+  "model": "models/rundhaus.glb",
+  "layers": ["Stroh", "Holz", "Dach"],
+  "roundhouse": {
+    "segmentPrefix": "Segment_"
+  }
+}
