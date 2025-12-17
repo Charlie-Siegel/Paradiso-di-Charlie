@@ -69,7 +69,7 @@ controls.update();
 const variants = {
   A: "./models/rundhaus.glb",
   B: "./models/magazzino.glb",
-  C: "./models/rundhaus2.glb"
+  C: "./models/magazzino2.glb"
 };
 
 const variantModels = {};
@@ -172,4 +172,5 @@ window.addEventListener("resize", () => {
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
+
 
