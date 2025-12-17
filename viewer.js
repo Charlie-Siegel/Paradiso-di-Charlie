@@ -67,9 +67,9 @@ controls.update();
 // Varianten-Konfiguration
 // -------------------------------------------------
 const variants = {
-  A: "./models/rundhaus_A.glb",
-  B: "./models/rundhaus_B.glb",
-  C: "./models/rundhaus_C.glb"
+  A: "./models/rundhaus.glb",
+  B: "./models/magazzino.glb",
+  C: "./models/rundhaus2.glb"
 };
 
 const variantModels = {};
@@ -172,3 +172,4 @@ window.addEventListener("resize", () => {
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
+
