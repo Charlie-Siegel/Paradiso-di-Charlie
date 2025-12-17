@@ -2,20 +2,20 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>JS Test</title>
+  <title>Paradiso di Charlie – Viewer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #f0f0f0;
+    }
+  </style>
 </head>
 <body>
-
-<h1 id="test">Wenn du das liest, läuft HTML</h1>
-
-<script>
-  document.body.style.background = "#ffeeee";
-  const p = document.createElement("p");
-  p.textContent = "JavaScript läuft!";
-  p.style.fontSize = "24px";
-  p.style.color = "red";
-  document.body.appendChild(p);
-</script>
-
+  <script type="module" src="viewer.js"></script>
 </body>
 </html>
