@@ -2,23 +2,33 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>Three FINAL Test</title>
+  <title>Paradiso di Charlie – Viewer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- IMPORT MAP (entscheidend) -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #f0f0f0;
+    }
+  </style>
 </head>
 <body>
 
-<h1 style="color:green">INDEX.HTML IST NEU</h1>
-<script type="importmap">
-{
-  "imports": {
-    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
-    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
-  }
-}
-</script>
-<script type="module">
-  console.log("INLINE MODULE LÄUFT");
-</script>
+<script type="module" src="./viewer.js"></script>
 
 </body>
 </html>
-
