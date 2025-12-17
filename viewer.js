@@ -61,27 +61,35 @@ function fitCameraToObject(camera, controls, object) {
 }
 
 
-
 function loadModel(cfg) {
   const loader = new GLTFLoader();
-  loader.load(cfg.model, gltf => {
+loader.load(
+  cfg.model,
+  gltf => {
+    console.log("GLTF geladen:", gltf);
+
     modelRoot = gltf.scene;
     scene.add(modelRoot);
 
-    // Layer erfassen
-    modelRoot.traverse(obj => {
-      if (!obj.isMesh) return;
-      cfg.layers.forEach(layer => {
-        if (obj.name.includes(layer)) {
-          layerMap[layer] ??= [];
-          layerMap[layer].push(obj);
-        }
-      });
-    });
+    console.log("Kinder im Modell:", modelRoot.children.length);
+
+    // DEBUG: roter Würfel zum Vergleich
+    const testGeo = new THREE.BoxGeometry(1, 1, 1);
+    const testMat = new THREE.MeshStandardMaterial({ color: 0xff0000 });
+    const testCube = new THREE.Mesh(testGeo, testMat);
+    testCube.position.set(0, 0.5, 0);
+    scene.add(testCube);
+
     fitCameraToObject(camera, controls, modelRoot);
     setupUI();
-  });
-}
+  },
+  undefined,
+  error => {
+    console.error("GLTF Fehler:", error);
+  }
+);
+
+
 
 // UI Layer-Schalter
 function setupUI() {
@@ -109,3 +117,4 @@ window.addEventListener("resize", () => {
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
+
