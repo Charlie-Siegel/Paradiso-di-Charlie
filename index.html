@@ -5,7 +5,7 @@
   <title>Paradiso di Charlie – Rundhaus Viewer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- IMPORT MAP für three.js -->
+  <!-- Import Map -->
   <script type="importmap">
   {
     "imports": {
@@ -26,45 +26,42 @@
       background: #f0f0f0;
     }
 
-    /* Varianten-UI */
-    #variantUI {
+    /* Layer UI */
+    #layerUI {
       position: absolute;
       top: 10px;
       left: 10px;
       z-index: 10;
-      background: rgba(255, 255, 255, 0.95);
-      padding: 10px;
+      background: rgba(255,255,255,0.95);
+      padding: 10px 12px;
       border-radius: 8px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     }
 
-    #variantUI button {
+    #layerUI label {
       display: block;
-      width: 100%;
-      margin-bottom: 6px;
-      padding: 8px 12px;
       font-size: 14px;
+      margin-bottom: 6px;
       cursor: pointer;
     }
 
-    #variantUI button:last-child {
-      margin-bottom: 0;
+    #layerUI input {
+      margin-right: 6px;
     }
   </style>
 </head>
 
 <body>
 
-  <!-- VARIANTEN-AUSWAHL -->
-  <div id="variantUI">
-    <button data-variant="A">Rundhaus</button>
-    <button data-variant="B">Magazzino</button>
-    <button data-variant="C">Haus in Magazzino</button>
+  <!-- Layer / Collections -->
+  <div id="layerUI">
+    <label><input type="checkbox" data-layer="Stroh" checked> Stroh</label>
+    <label><input type="checkbox" data-layer="Holz" checked> Holz</label>
+    <label><input type="checkbox" data-layer="Dach" checked> Dach</label>
   </div>
 
-  <!-- THREE.JS VIEWER -->
+  <!-- Viewer -->
   <script type="module" src="./viewer.js"></script>
 
 </body>
 </html>
-
