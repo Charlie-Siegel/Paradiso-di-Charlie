@@ -1,6 +1,8 @@
 import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js";
 import { GLTFLoader } from "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/loaders/GLTFLoader.js";
 
+console.log(">>> viewer.js VERSION 2025-01-DEBUG <<<");
+
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0xdddddd);
 
@@ -59,3 +61,4 @@ window.addEventListener("resize", () => {
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
+
