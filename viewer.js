@@ -55,6 +55,17 @@ controls.enableRotate = true;
 controls.target.set(0, 0, 0);
 controls.update();
 
+// --- Mausbelegung explizit festlegen ---
+controls.mouseButtons = {
+  LEFT: THREE.MOUSE.ROTATE,
+  MIDDLE: THREE.MOUSE.DOLLY,
+  RIGHT: THREE.MOUSE.PAN
+};
+
+controls.enablePan = true;
+controls.screenSpacePanning = true;
+
+
 // -------------------------------------------------
 // GLB laden
 // -------------------------------------------------
@@ -109,3 +120,4 @@ window.addEventListener("resize", () => {
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
+
