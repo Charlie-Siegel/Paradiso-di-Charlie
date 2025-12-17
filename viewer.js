@@ -1,4 +1,5 @@
 import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.160/build/three.module.js";
+import { GLTFLoader } from "https://cdn.jsdelivr.net/npm/three@0.160/examples/jsm/loaders/GLTFLoader.js";
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0xdddddd);
@@ -7,9 +8,9 @@ const camera = new THREE.PerspectiveCamera(
   60,
   window.innerWidth / window.innerHeight,
   0.1,
-  1000
+  2000
 );
-camera.position.set(4, 4, 4);
+camera.position.set(6, 6, 6);
 camera.lookAt(0, 0, 0);
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -20,15 +21,30 @@ document.body.appendChild(renderer.domElement);
 // Licht
 scene.add(new THREE.AmbientLight(0xffffff, 0.8));
 const light = new THREE.DirectionalLight(0xffffff, 0.8);
-light.position.set(5, 10, 5);
+light.position.set(10, 20, 10);
 scene.add(light);
 
-// TEST-WÜRFEL
+// DEBUG-Würfel (bleibt sichtbar!)
 const cube = new THREE.Mesh(
   new THREE.BoxGeometry(1, 1, 1),
   new THREE.MeshStandardMaterial({ color: 0xff0000 })
 );
 scene.add(cube);
+
+// ===== GLB LADEN =====
+const loader = new GLTFLoader();
+loader.load(
+  "models/rundhaus.glb",   // <-- Pfad ggf. anpassen
+  gltf => {
+    console.log("GLB geladen");
+    const model = gltf.scene;
+    scene.add(model);
+  },
+  undefined,
+  err => {
+    console.error("GLB Fehler:", err);
+  }
+);
 
 // Animation
 function animate() {
