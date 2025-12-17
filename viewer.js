@@ -1,6 +1,6 @@
 // =======================================
 // viewer.js – Paradiso di Charlie
-// Varianten-Viewer (nur eine sichtbar)
+// Blender-Collections wie Ebenen
 // =======================================
 
 import * as THREE from "three";
@@ -53,7 +53,6 @@ controls.enableZoom = true;
 controls.enablePan = true;
 controls.enableRotate = true;
 
-// explizite Mausbelegung (Laptop intuitiv)
 controls.mouseButtons = {
   LEFT: THREE.MOUSE.ROTATE,
   MIDDLE: THREE.MOUSE.DOLLY,
@@ -64,93 +63,64 @@ controls.target.set(0, 0, 0);
 controls.update();
 
 // -------------------------------------------------
-// Varianten-Konfiguration
-// -------------------------------------------------
-const variants = {
-  A: "./models/rundhaus.glb",
-  B: "./models/magazzino2.glb",
-  C: "./models/magazzino.glb"
-};
-
-const variantModels = {};
-let activeVariant = null;
-
-// -------------------------------------------------
-// GLB Loader
+// GLB laden
 // -------------------------------------------------
 const loader = new GLTFLoader();
+let modelRoot = null;
 
-// -------------------------------------------------
-// Variante laden (einmalig)
-// -------------------------------------------------
-Object.entries(variants).forEach(([key, path]) => {
-  loader.load(
-    path,
-    (gltf) => {
-      const model = gltf.scene;
+loader.load(
+  "./models/rundhaus.glb",   // ggf. anpassen
+  (gltf) => {
+    modelRoot = gltf.scene;
+    scene.add(modelRoot);
 
-      // --- Modell zentrieren ---
-      const box = new THREE.Box3().setFromObject(model);
-      const size = box.getSize(new THREE.Vector3());
-      const center = box.getCenter(new THREE.Vector3());
+    // --- Modell zentrieren ---
+    const box = new THREE.Box3().setFromObject(modelRoot);
+    const size = box.getSize(new THREE.Vector3()).length();
+    const center = box.getCenter(new THREE.Vector3());
 
-      model.position.sub(center);
-      model.visible = false;
+    modelRoot.position.sub(center);
 
-      scene.add(model);
-      variantModels[key] = {
-        model,
-        size: size.length()
-      };
+    // --- Kamera ausrichten ---
+    camera.position.set(size * 0.8, size * 0.6, size * 0.8);
+    camera.lookAt(0, 0, 0);
+    controls.target.set(0, 0, 0);
+    controls.update();
 
-      console.log("Variante geladen:", key);
-
-      // erste geladene Variante aktivieren
-      if (!activeVariant) {
-        setActiveVariant(key);
+    // Debug: Collections ausgeben
+    modelRoot.traverse(obj => {
+      if (obj.isGroup && obj.name) {
+        console.log("Collection:", obj.name);
       }
-    },
-    undefined,
-    (error) => {
-      console.error("GLB Ladefehler (" + key + "):", error);
+    });
+
+    console.log("GLB geladen");
+  },
+  undefined,
+  (error) => {
+    console.error("GLB Ladefehler:", error);
+  }
+);
+
+// -------------------------------------------------
+// Blender-Collection ein/ausblenden
+// -------------------------------------------------
+function toggleCollection(collectionName, visible) {
+  if (!modelRoot) return;
+
+  modelRoot.traverse(obj => {
+    if (obj.name === collectionName) {
+      obj.visible = visible;
     }
-  );
-});
-
-// -------------------------------------------------
-// Aktive Variante setzen (NUR EINE sichtbar)
-// -------------------------------------------------
-function setActiveVariant(key) {
-  Object.keys(variantModels).forEach(k => {
-    variantModels[k].model.visible = false;
   });
-
-  const entry = variantModels[key];
-  if (!entry) return;
-
-  entry.model.visible = true;
-  activeVariant = key;
-
-  // Kamera sinnvoll positionieren
-  const d = entry.size;
-  camera.position.set(d * 0.8, d * 0.6, d * 0.8);
-  camera.lookAt(0, 0, 0);
-
-  controls.target.set(0, 0, 0);
-  controls.update();
-
-  console.log("Aktive Variante:", key);
 }
 
 // -------------------------------------------------
-// UI-Buttons verbinden
+// UI mit Collections verbinden
 // -------------------------------------------------
-document.querySelectorAll("#variantUI button").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const key = btn.dataset.variant;
-    if (variantModels[key]) {
-      setActiveVariant(key);
-    }
+document.querySelectorAll("#layerUI input").forEach(cb => {
+  cb.addEventListener("change", () => {
+    toggleCollection(cb.dataset.layer, cb.checked);
   });
 });
 
@@ -172,7 +142,3 @@ window.addEventListener("resize", () => {
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
-
-
-
-
