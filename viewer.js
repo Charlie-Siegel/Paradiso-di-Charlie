@@ -1,5 +1,5 @@
-import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.160/build/three.module.js";
-import { GLTFLoader } from "https://cdn.jsdelivr.net/npm/three@0.160/examples/jsm/loaders/GLTFLoader.js";
+import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js";
+import { GLTFLoader } from "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/loaders/GLTFLoader.js";
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0xdddddd);
@@ -24,7 +24,7 @@ const light = new THREE.DirectionalLight(0xffffff, 0.8);
 light.position.set(10, 20, 10);
 scene.add(light);
 
-// DEBUG-Würfel (bleibt sichtbar!)
+// DEBUG-Würfel
 const cube = new THREE.Mesh(
   new THREE.BoxGeometry(1, 1, 1),
   new THREE.MeshStandardMaterial({ color: 0xff0000 })
@@ -34,11 +34,10 @@ scene.add(cube);
 // ===== GLB LADEN =====
 const loader = new GLTFLoader();
 loader.load(
-  "models/rundhaus.glb",   // <-- Pfad ggf. anpassen
+  "models/rundhaus.glb",
   gltf => {
     console.log("GLB geladen");
-    const model = gltf.scene;
-    scene.add(model);
+    scene.add(gltf.scene);
   },
   undefined,
   err => {
