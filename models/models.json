@@ -4,11 +4,16 @@
     "label": "Rundhaus"
   },
   {
-    "file": "variante_01.glb",
-    "label": "Variante 1"
+    "file": "rundhaus_moebel.glb",
+    "label": "Rundhaus mit Möbel"
+  },
+
+  {
+    "file": "magazzino.glb",
+    "label": "Magazzino über Haus"
   },
   {
-    "file": "variante_02.glb",
-    "label": "Variante 2"
+    "file": "magazzino2.glb",
+    "label": "Magazzino hinter Haus"
   }
 ]
