@@ -69,7 +69,7 @@ const loader = new GLTFLoader();
 let modelRoot = null;
 
 loader.load(
-  "./models/magazzino.glb",   // ggf. anpassen
+  "./models/magazzino2.glb",   // ggf. anpassen
   (gltf) => {
     modelRoot = gltf.scene;
     scene.add(modelRoot);
@@ -142,4 +142,5 @@ window.addEventListener("resize", () => {
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
+
 
