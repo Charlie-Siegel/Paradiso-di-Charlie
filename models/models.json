@@ -9,11 +9,11 @@
   },
 
   {
-    "file": "magazzino.glb",
-    "label": "Magazzino über Haus"
+    "file": "haus_in_magazzino.glb",
+    "label": "Haus in Magazzino"
   },
   {
-    "file": "magazzino2.glb",
+    "file": "magazzino_hinter.glb",
     "label": "Magazzino hinter Haus"
   }
 ]
