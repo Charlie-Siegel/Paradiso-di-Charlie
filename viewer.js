@@ -1,6 +1,5 @@
 // =======================================
-// viewer.js – Einfacher GLB Viewer
-// Datei auswählen, drehen, zoomen, verschieben
+// viewer.js – GLB Viewer (GitHub /models)
 // =======================================
 
 import * as THREE from "three";
@@ -43,7 +42,7 @@ dirLight.position.set(10, 15, 10);
 scene.add(dirLight);
 
 // -------------------------------------------------
-// OrbitControls (Maus + Touch)
+// OrbitControls
 // -------------------------------------------------
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
@@ -53,7 +52,6 @@ controls.enableZoom = true;
 controls.enablePan = true;
 controls.enableRotate = true;
 
-// intuitive Mausbelegung (Laptop)
 controls.mouseButtons = {
   LEFT: THREE.MOUSE.ROTATE,
   MIDDLE: THREE.MOUSE.DOLLY,
@@ -70,20 +68,19 @@ const loader = new GLTFLoader();
 let currentModel = null;
 
 // -------------------------------------------------
-// GLB laden (aus Dateiauswahl)
+// GLB aus /models laden
 // -------------------------------------------------
-function loadGLBFromFile(file) {
+function loadModelFromRepo(filename) {
 
-  // altes Modell entfernen
   if (currentModel) {
     scene.remove(currentModel);
     currentModel = null;
   }
 
-  const url = URL.createObjectURL(file);
+  const path = "./models/" + filename;
 
   loader.load(
-    url,
+    path,
     (gltf) => {
       const model = gltf.scene;
       scene.add(model);
@@ -107,7 +104,7 @@ function loadGLBFromFile(file) {
       controls.target.set(0, 0, 0);
       controls.update();
 
-      console.log("GLB geladen:", file.name);
+      console.log("GLB geladen:", filename);
     },
     undefined,
     (error) => {
@@ -117,15 +114,13 @@ function loadGLBFromFile(file) {
 }
 
 // -------------------------------------------------
-// Datei-Input verbinden
+// Buttons verbinden
 // -------------------------------------------------
-const input = document.getElementById("glbInput");
-
-input.addEventListener("change", (event) => {
-  const file = event.target.files[0];
-  if (file) {
-    loadGLBFromFile(file);
-  }
+document.querySelectorAll("#modelUI button").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const file = btn.dataset.model;
+    loadModelFromRepo(file);
+  });
 });
 
 // -------------------------------------------------
