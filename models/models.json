@@ -7,7 +7,6 @@
     "file": "rundhaus_moebel.glb",
     "label": "Rundhaus mit Möbel"
   },
-
   {
     "file": "haus_in_magazzino.glb",
     "label": "Haus in Magazzino"
@@ -15,5 +14,9 @@
   {
     "file": "magazzino_hinter.glb",
     "label": "Magazzino hinter Haus"
+  },
+   {
+    "file": "aktuelles.glb",
+    "label": "aktuelles Modell"
   }
 ]
