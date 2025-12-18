@@ -69,7 +69,7 @@ function loadModel(filename) {
 // -------------------------------------------------
 // models.json laden → Buttons erzeugen
 // -------------------------------------------------
-fetch("./models/models.json")
+fetch("./models/models.json?ts=" + Date.now())
   .then(res => res.json())
   .then(list => {
     const ui = document.getElementById("modelUI");
@@ -102,3 +102,4 @@ window.addEventListener("resize", () => {
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
+
