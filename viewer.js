@@ -1,22 +1,13 @@
-// =======================================
-// viewer.js – GLB Viewer (GitHub /models)
-// =======================================
-
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-console.log("viewer.js läuft");
-
 // -------------------------------------------------
-// Szene
+// Szene, Kamera, Renderer
 // -------------------------------------------------
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0xeeeeee);
 
-// -------------------------------------------------
-// Kamera
-// -------------------------------------------------
 const camera = new THREE.PerspectiveCamera(
   60,
   window.innerWidth / window.innerHeight,
@@ -24,107 +15,80 @@ const camera = new THREE.PerspectiveCamera(
   5000
 );
 
-// -------------------------------------------------
-// Renderer
-// -------------------------------------------------
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-// -------------------------------------------------
 // Licht
-// -------------------------------------------------
 scene.add(new THREE.AmbientLight(0xffffff, 0.8));
+const light = new THREE.DirectionalLight(0xffffff, 1.0);
+light.position.set(10, 15, 10);
+scene.add(light);
 
-const dirLight = new THREE.DirectionalLight(0xffffff, 1.0);
-dirLight.position.set(10, 15, 10);
-scene.add(dirLight);
-
-// -------------------------------------------------
-// OrbitControls
-// -------------------------------------------------
+// Controls
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
-controls.dampingFactor = 0.08;
-
-controls.enableZoom = true;
-controls.enablePan = true;
-controls.enableRotate = true;
-
 controls.mouseButtons = {
   LEFT: THREE.MOUSE.ROTATE,
   MIDDLE: THREE.MOUSE.DOLLY,
   RIGHT: THREE.MOUSE.PAN
 };
-
-controls.target.set(0, 0, 0);
 controls.update();
 
-// -------------------------------------------------
-// GLB Loader
-// -------------------------------------------------
+// Loader
 const loader = new GLTFLoader();
 let currentModel = null;
 
 // -------------------------------------------------
-// GLB aus /models laden
+// Modell laden
 // -------------------------------------------------
-function loadModelFromRepo(filename) {
+function loadModel(filename) {
 
   if (currentModel) {
     scene.remove(currentModel);
-    currentModel = null;
   }
 
-  const path = "./models/" + filename;
+  loader.load("./models/" + filename, gltf => {
+    currentModel = gltf.scene;
+    scene.add(currentModel);
 
-  loader.load(
-    path,
-    (gltf) => {
-      const model = gltf.scene;
-      scene.add(model);
-      currentModel = model;
+    const box = new THREE.Box3().setFromObject(currentModel);
+    const size = box.getSize(new THREE.Vector3()).length();
+    const center = box.getCenter(new THREE.Vector3());
 
-      // --- Modell zentrieren ---
-      const box = new THREE.Box3().setFromObject(model);
-      const size = box.getSize(new THREE.Vector3()).length();
-      const center = box.getCenter(new THREE.Vector3());
+    currentModel.position.sub(center);
 
-      model.position.sub(center);
-
-      // --- Kamera passend setzen ---
-      camera.position.set(
-        size * 0.8,
-        size * 0.6,
-        size * 0.8
-      );
-      camera.lookAt(0, 0, 0);
-
-      controls.target.set(0, 0, 0);
-      controls.update();
-
-      console.log("GLB geladen:", filename);
-    },
-    undefined,
-    (error) => {
-      console.error("GLB Ladefehler:", error);
-    }
-  );
+    camera.position.set(size * 0.8, size * 0.6, size * 0.8);
+    camera.lookAt(0, 0, 0);
+    controls.target.set(0, 0, 0);
+    controls.update();
+  });
 }
 
 // -------------------------------------------------
-// Buttons verbinden
+// models.json laden → Buttons erzeugen
 // -------------------------------------------------
-document.querySelectorAll("#modelUI button").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const file = btn.dataset.model;
-    loadModelFromRepo(file);
+fetch("./models/models.json")
+  .then(res => res.json())
+  .then(list => {
+    const ui = document.getElementById("modelUI");
+
+    list.forEach((entry, index) => {
+      const btn = document.createElement("button");
+      btn.textContent = entry.label;
+      btn.onclick = () => loadModel(entry.file);
+      ui.appendChild(btn);
+
+      // erstes Modell automatisch laden
+      if (index === 0) {
+        loadModel(entry.file);
+      }
+    });
   });
-});
 
 // -------------------------------------------------
-// Render-Loop
+// Render Loop
 // -------------------------------------------------
 function animate() {
   requestAnimationFrame(animate);
@@ -133,9 +97,6 @@ function animate() {
 }
 animate();
 
-// -------------------------------------------------
-// Resize
-// -------------------------------------------------
 window.addEventListener("resize", () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
