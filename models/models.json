@@ -3,17 +3,21 @@
     "file": "casa_e_mobili.glb",
     "label": "Casa e mobili"
   },
+   {
+    "file": "casa_e_mobili2.glb",
+    "label": "Casa e mobili"
+  },
  {
     "file": "casa_structura.glb",
     "label": "Casa structura"
   },
   {
     "file": "casa_in_magazzino.glb",
-    "label": "Haus in Magazzino (vers 2)"
+    "label": "Casa in magazzino (vers 2)"
   },
    {
     "file": "casa_in_magazzino2.glb",
-    "label": "Haus in Magazzino"
+    "label": "Casa in magazzino"
   },
   {
     "file": "magazzino_e_casa.glb",
