@@ -1,22 +1,26 @@
 [
   {
-    "file": "rundhaus.glb",
-    "label": "Rundhaus"
+    "file": "casa_e_mobili.glb",
+    "label": "Casa e mobili"
+  },
+ {
+    "file": "casa_structura.glb",
+    "label": "Casa structura"
   },
   {
-    "file": "magazzino2.glb",
-    "label": "Rundhaus mit Möbel"
+    "file": "casa_in_magazzino.glb",
+    "label": "Haus in Magazzino (vers 2)"
   },
-  {
-    "file": "haus_in_magazzino.glb",
+   {
+    "file": "casa_in_magazzino2.glb",
     "label": "Haus in Magazzino"
   },
   {
-    "file": "models.glb",
-    "label": "Magazzino hinter Haus"
+    "file": "magazzino_e_casa.glb",
+    "label": "Magazzino e casa"
   },
    {
-    "file": "main_window.glb",
-    "label": "aktuelles Modell"
+    "file": "magazzino_e_casa2.glb",
+    "label": "Magazzino e casa (vers 2)"
   }
 ]
